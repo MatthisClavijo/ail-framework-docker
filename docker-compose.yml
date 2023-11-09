@@ -1,0 +1,18 @@
+version: '3'
+services:
+  ail-framework:
+    build: ./
+    image: ubuntu:ail
+    command: -l
+    tty: true
+    container_name: ail-framework
+    volumes:
+      - ./Volumes/CRAWLED_SCREENSHOT/:/opt/ail-framework/CRAWLED_SCREENSHOT
+      - ./Volumes/PASTES/:/opt/ail-framework/PASTES
+      - ./Volumes/DATA_KVROCKS:/opt/ail-framework/DATA_KVROCKS
+      - ./Volumes/indexdir:/opt/ail-framework/indexdir
+      - ./Volumes/HASHS:/opt/ail-framework/HASHS
+      - ./Volumes/logs:/opt/ail-framework/logs
+    ports:
+      - 127.0.0.1:7000:7000
+
