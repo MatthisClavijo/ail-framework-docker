@@ -19,7 +19,7 @@ git clone https://github.com/ail-project/ail-framework.git
 ### Build ail docker container
 sudo docker-compose build
 
-### Run ail docker container
+### Run ail docker container
 sudo docker-compose up -d
 
 ### Reset admin password
@@ -29,7 +29,7 @@ sudo docker exec ail-framework bin/LAUNCH.sh -rp
 sudo docker-compose down
 
 ## Useful information
-### UI for ail-framework
+### UI for ail-framework
 http://127.0.0.1:7000
 
 ### Lacus url for crawler settings
