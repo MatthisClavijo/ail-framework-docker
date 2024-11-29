@@ -13,27 +13,45 @@ Docker image size: ~10GB<br>
 Memory: >6GB<br>
 
 ## Guide
-### Clone ail-framework
+### Clone ail-framework-docker and ail-framework
+```bash
+git clone https://github.com/MatthisClavijo/ail-framework-docker.git
+cd ail-framework-docker
 git clone https://github.com/ail-project/ail-framework.git
+```
 
 ### Build ail docker container
-sudo docker-compose build
+```bash
+sudo docker compose build
+```
 
 ### Run ail docker container
-sudo docker-compose up -d
+```bash
+sudo docker compose up -d
+```
 
 ### Reset admin password
+```bash
 sudo docker exec ail-framework bin/LAUNCH.sh -rp
+```
 
 ### Stop ail docker container
-sudo docker-compose down
+```bash
+sudo docker compose down
+```
 
 ## Useful information
 ### UI for ail-framework
-http://127.0.0.1:7000
+```bash
+https://127.0.0.1:7000
+```
 
 ### Lacus url for crawler settings
+```bash
 http://127.0.0.1:7100
+```
 
 ### Tor proxy
+```bash
 socks5://127.0.0.1:9050
+```
