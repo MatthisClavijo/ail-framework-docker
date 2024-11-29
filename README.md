@@ -9,7 +9,7 @@ Ail-framework: https://github.com/ail-project/ail-framework<br>
 
 ## Prerequisites
 Ail-framework is a resource intensive project !<br>
-Docker image size: ~10GB<br>
+Docker image size: ~20GB<br>
 Memory: >6GB<br>
 
 ## Guide
