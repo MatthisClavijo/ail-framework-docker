@@ -1,11 +1,12 @@
 FROM ubuntu:24.04
+
+# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONIOENCODING=utf8
 ENV PATH="/root/.local/bin:$PATH"
 
 # Add missing packages
-RUN apt update
-RUN apt install -y git nodejs npm pipx tor
+RUN apt update && apt install -y git pipx tor
 
 # Copy ail-framework project
 COPY ./ail-framework/ /opt/ail-framework
@@ -26,26 +27,35 @@ RUN sed -i "s|host = 127.0.0.1|host = 0.0.0.0|g" configs/core.cfg
 RUN git clone https://github.com/ail-project/lacus.git
 RUN git clone https://github.com/valkey-io/valkey.git
 ## Install dependencies
-RUN apt install build-essential
+RUN apt install -y build-essential
 ## Compile valkey
 WORKDIR /opt/ail-framework/valkey
 RUN git checkout 8.0
 RUN make
 ## Install lacus
 WORKDIR /opt/ail-framework/lacus
-## Install dependencies
-RUN npm install -g playwright
+ENV PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW=1
+ENV PW_TEST_SCREENSHOT_NO_FONTS_READY=1
+RUN cp config/logging.json.sample config/logging.json
+## Install poetry
 RUN pipx install poetry
-RUN npm cache clean -f
-RUN npm install -g n
-RUN n stable
 RUN apt purge -y python3-virtualenv
 RUN pipx install virtualenv
+## Poetry install dependencies
 RUN poetry install
-RUN playwright install-deps
+## Install playwright
+RUN poetry run playwright install
+RUN poetry run playwright install-deps
 RUN apt -y install ffmpeg libavcodec-extra
 RUN echo LACUS_HOME="`pwd`" >> .env
 RUN poetry run update --init --yes
+
+# Create the patch directory
+COPY patches/ /opt/ail-framework/patches/
+# Install the patched playwrightcapture
+RUN package_path=$(poetry run python3 -c "import playwrightcapture; print(playwrightcapture.__file__.rsplit('/', 1)[0])") && \
+    cp "$package_path/capture.py" "$package_path/capture.py.bak" && \
+    cp /opt/ail-framework/patches/capture.py "$package_path/capture.py"
 
 # Update ail LAUNCH script
 WORKDIR /opt/ail-framework
