@@ -50,13 +50,6 @@ RUN apt -y install ffmpeg libavcodec-extra
 RUN echo LACUS_HOME="`pwd`" >> .env
 RUN poetry run update --init --yes
 
-# Create the patch directory
-COPY patches/ /opt/ail-framework/patches/
-# Install the patched playwrightcapture
-RUN package_path=$(poetry run python3 -c "import playwrightcapture; print(playwrightcapture.__file__.rsplit('/', 1)[0])") && \
-    cp "$package_path/capture.py" "$package_path/capture.py.bak" && \
-    cp /opt/ail-framework/patches/capture.py "$package_path/capture.py"
-
 # Update ail LAUNCH script
 WORKDIR /opt/ail-framework
 RUN echo "service tor start" >> bin/LAUNCH.sh
